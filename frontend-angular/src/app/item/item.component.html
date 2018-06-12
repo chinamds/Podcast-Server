@@ -1,0 +1,54 @@
+
+<ps-toolbar>
+  <span class="title">{{item.title}}</span>
+</ps-toolbar>
+
+<div class="item__cover" [ngStyle]="{'background-image': 'url(' + item.cover.url + ')' }">
+  <div class="buttons">
+    <mat-icon (click)="back()">arrow_back</mat-icon>
+  </div>
+</div>
+
+<div class="item__actions_button">
+  <button mat-raised-button color="primary" (click)="play()" *ngIf="isPlayable(item)">
+    <mat-icon>play_arrow</mat-icon>
+    Play
+  </button>
+  <button mat-raised-button color="primary" (click)="download()" *ngIf="isDownloadable(item)"  >
+    <mat-icon>file_download</mat-icon>
+    Download
+  </button>
+
+</div>
+
+<mat-divider></mat-divider>
+
+<p class="item__description">
+  {{item.description}}
+</p>
+
+<mat-divider></mat-divider>
+
+<div class="item__date">
+  <div class="item__date__box publication_date" *ngIf="item.pubDate">
+    <mat-icon mat-list-icon>today</mat-icon>
+    <div class="item__date_text">
+      <span class="item_date_text_date">{{ item.pubDate | date: 'mediumDate'}}</span>
+      <span class="item_date_text_time">{{ item.pubDate | date: 'mediumTime'}}</span>
+    </div>
+  </div>
+  <div class="item__date__box creation_date" *ngIf="item.creationDate">
+    <mat-icon mat-list-icon>add_box</mat-icon>
+    <div class="item__date_text">
+      <span class="item_date_text_date">{{ item.creationDate | date: 'mediumDate'}}</span>
+      <span class="item_date_text_time">{{ item.creationDate | date: 'mediumTime'}}</span>
+    </div>
+  </div>
+  <div class="item__date__box download_date" *ngIf="item.downloadDate">
+    <mat-icon mat-list-icon>file_download</mat-icon>
+    <div class="item__date_text">
+      <span class="item_date_text_date">{{ item.downloadDate | date: 'mediumDate'}}</span>
+      <span class="item_date_text_time">{{ item.downloadDate | date: 'mediumTime'}}</span>
+    </div>
+  </div>
+</div>

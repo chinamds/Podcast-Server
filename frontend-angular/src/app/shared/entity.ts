@@ -2,81 +2,97 @@
  * Created by kevin on 16/10/2016.
  */
 
+export type uuid = string;
+
 /* Entity */
 export interface Cover {
-  id: string;
-  url: string;
-  width: number;
-  height: number;
+	id: uuid;
+	url: string;
+	width: number;
+	height: number;
 }
 
 export interface Item {
-  id: string;
-  cover: Cover;
-  title: string;
-  url: string;
-  mimeType: string;
-  status: Status | string;
-  creationDate: string;
-  isDownloaded: boolean;
-  proxyURL: string;
-  podcastId: string;
+	id: uuid;
+	cover: Cover;
+	description?: string;
+	pubDate?: string | Date;
+	downloadDate?: string | Date;
+	creationDate: string | Date;
+	title: string;
+	url: string;
+	mimeType: string;
+	status: Status | string;
+	isDownloaded: boolean;
+	proxyURL: string;
+	podcastId: string;
+	length?: number;
+	fileName?: string;
+	progression?: number;
 }
 
 export interface Podcast {
-  id: string;
-  title: string;
-  type: string;
-  lastUpdate: string;
-  cover: Cover;
+	id: uuid;
+	title: string;
+	type: string;
+	lastUpdate: string;
+	cover: Cover;
+	creationDate?: Date | string;
+	description?: string;
+	hasToBeDeleted?: boolean;
+	tags?: Tag[];
+	url?: string;
 }
 
 export interface Tag {
-  id: string;
-  name: string;
+	id: uuid;
+	name: string;
 }
 
 export interface Page<T> {
-  content: Array<T>;
-  first: boolean;
-  last: boolean;
-  totalPages: number;
-  totalElements: number;
-  numberOfElements: number;
-  size: number;
-  number: number;
-  sort: Array<Sort>;
+	content: Array<T>;
+	first: boolean;
+	last: boolean;
+	totalPages: number;
+	totalElements: number;
+	numberOfElements: number;
+	size: number;
+	number: number;
+	sort: Array<Sort>;
 }
 
 export interface Sort {
-  direction: Direction | string;
-  property: string;
-  ignoreCase?: boolean;
-  nullHandling?: string,
-  descending?: boolean;
-  ascending?: boolean;
+	direction: Direction | string;
+	property: string;
+	ignoreCase?: boolean;
+	nullHandling?: string;
+	descending?: boolean;
+	ascending?: boolean;
 }
 
 export enum Direction {
-  ASC = <any>'ASC',
-  DESC = <any>'DESC'
+	ASC = 'ASC',
+	DESC = 'DESC'
 }
 
 export enum Status {
-  NOT_DOWNLOADED = <any>'NOT_DOWNLOADED',
-  DELETED = <any>'DELETED',
-  STARTED = <any>'STARTED',
-  FINISH = <any>'FINISH',
-  STOPPED = <any>'STOPPED',
-  PAUSED = <any>'PAUSED',
-  FAILED = <any>'FAILED'
+	NOT_DOWNLOADED = 'NOT_DOWNLOADED',
+	DELETED = 'DELETED',
+	STARTED = 'STARTED',
+	FINISH = 'FINISH',
+	STOPPED = 'STOPPED',
+	PAUSED = 'PAUSED',
+	FAILED = 'FAILED'
 }
 
-export interface SearchItemPageRequest {
-  q?: string;
-  page?: number;
-  size?: number;
-  status?: Status[];
-  tags?: Tag[];
-  sort?: Sort[];
+export interface Pageable {
+	page?: number;
+	size?: number;
+	sort?: Sort[];
+}
+
+export interface SearchItemPageRequest extends Pageable {
+	q?: string;
+	status?: Status[];
+	tags?: Tag[];
 }

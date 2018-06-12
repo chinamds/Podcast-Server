@@ -6,17 +6,19 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {StoreModule, Store} from '@ngrx/store';
+import {Store, StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
-import {sidenav} from './app.reducer';
+import {AppState, sidenav} from './app.reducer';
 import {CloseSideNavAction, OpenSideNavAction} from './app.actions';
+import { FloatingPlayerModule } from '#app/floating-player/floating-player.module';
+import { floatingPlayer } from '#app/floating-player/floating-player.reducer';
 
 describe('AppComponent', () => {
 
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let el: DebugElement;
-  let store: Store<any>;
+  let store: Store<AppState>;
 
 
   beforeEach(async(() => {
@@ -28,8 +30,9 @@ describe('AppComponent', () => {
         NoopAnimationsModule,
         MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule,
         RouterTestingModule.withRoutes([]),
-        StoreModule.forRoot({sidenav}),
+        StoreModule.forRoot({sidenav, floatingPlayer}),
         EffectsModule.forRoot([]),
+        FloatingPlayerModule
       ]
     }).compileComponents();
 

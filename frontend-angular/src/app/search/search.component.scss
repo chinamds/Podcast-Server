@@ -1,21 +1,22 @@
-
-mat-toolbar {
-  .toolbar__title {
-    margin-left: 1vw;
-  }
-}
+@import "../../variables";
 
 .search__bar {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
   justify-content: space-around;
-  height: 7vh;
+  min-height: 7vh;
 
-  mat-select[name=property] {
-    width: 12vw;
+  .search__sort {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-around;
   }
+}
 
+mat-paginator {
+  background-color: $global-background-color;
 }
 
 .search__results {
@@ -28,12 +29,11 @@ mat-toolbar {
   mat-card {
     width: 215px;
     margin: 5px;
-  }
-}
 
-mat-icon {
-  font-size: 1.3rem;
-  width: inherit;
-  height: 1.4rem;
-  vertical-align: middle;
+    [mat-card-image] {
+      height: 263px;
+      object-fit: cover;
+    }
+
+  }
 }

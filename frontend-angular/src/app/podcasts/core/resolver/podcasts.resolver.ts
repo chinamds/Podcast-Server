@@ -1,24 +1,20 @@
 import { Injectable } from '@angular/core';
-import {Store} from '@ngrx/store';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {Observable} from 'rxjs/Observable';
-import { Podcast } from '../../../shared/entity';
-import {selectPodcasts} from '../../podcasts.reducer';
+import { select, Store } from '@ngrx/store';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { Podcast } from '#app/shared/entity';
+import { selectPodcasts } from '../../podcasts.reducer';
 import * as PodcastsActions from '../../podcasts.actions';
-import {skip, take} from 'rxjs/operators';
+import { skip, take } from 'rxjs/operators';
+import { AppState } from '#app/app.reducer';
 
 @Injectable()
 export class PodcastsResolver implements Resolve<Podcast[]> {
+	constructor(private store: Store<AppState>) {}
 
-  constructor(private store: Store<any>) {}
+	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Podcast[]> {
+		this.store.dispatch(new PodcastsActions.FindAll());
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Podcast[]> {
-    this.store.dispatch(new PodcastsActions.FindAll());
-
-    return this.store.select(selectPodcasts)
-      .pipe(
-        skip(1),
-        take(1)
-      );
-  }
-} /* istanbul ignore next */
+		return this.store.pipe(select(selectPodcasts), skip(1), take(1));
+	}
+}

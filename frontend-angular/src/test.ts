@@ -1,32 +1,44 @@
-// This file is required by karma.conf.js and loads recursively all the .spec and framework files
+import 'jest-preset-angular';
 
-import 'zone.js/dist/long-stack-trace-zone';
-import 'zone.js/dist/proxy.js';
-import 'zone.js/dist/sync-test';
-import 'zone.js/dist/jasmine-patch';
-import 'zone.js/dist/async-test';
-import 'zone.js/dist/fake-async-test';
-import { getTestBed } from '@angular/core/testing';
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting
-} from '@angular/platform-browser-dynamic/testing';
+// Media Elements
+// @ts-ignore
+window.HTMLMediaElement.prototype.load = () => {};
 
-// Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
-declare var __karma__: any;
-declare var require: any;
+// @ts-ignore
+global.CSS = null;
 
-// Prevent Karma from running prematurely.
-__karma__.loaded = function () {};
+const webStorageMock = () => {
+  let storage: Record<string, any> = {};
+  return {
+    getItem: (key: string) => (key in storage ? storage[key] : null),
+    setItem: (key: string, value: any) => (storage[key] = value || ''),
+    removeItem: (key: string) => delete storage[key],
+    clear: () => (storage = {}),
+  };
+};
 
-// First, initialize the Angular testing environment.
-getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting()
-);
-// Then we find all the tests.
-const context = require.context('./', true, /\.spec\.ts$/);
-// And load the modules.
-context.keys().map(context);
-// Finally, start Karma to run the tests.
-__karma__.start();
+Object.defineProperty(window, 'localStorage', { value: webStorageMock() });
+Object.defineProperty(window, 'sessionStorage', { value: webStorageMock() });
+Object.defineProperty(document, 'doctype', {
+  value: '<!DOCTYPE html>',
+});
+Object.defineProperty(window, 'getComputedStyle', {
+  value: () => {
+    return {
+      display: 'none',
+      appearance: ['-webkit-appearance'],
+    };
+  },
+});
+/**
+ * ISSUE: https://github.com/angular/material2/issues/7101
+ * Workaround for JSDOM missing transform property
+ */
+Object.defineProperty(document.body.style, 'transform', {
+  value: () => {
+    return {
+      enumerable: true,
+      configurable: true,
+    };
+  },
+});
